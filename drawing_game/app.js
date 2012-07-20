@@ -1,7 +1,9 @@
 var express = require('express')
-  , app     = require('express').createServer()
-  , io      = require('socket.io')
-  
+  , http    = require('http')
+  , app     = express()
+  , server  = http.createServer(app)
+  , io      = require('socket.io').listen(server)
+  , imagedata
   
 // TODO: Split conf. into dev and prod.
 app.configure(function(){
@@ -19,4 +21,24 @@ app.get('/', function(req, res, next){
   res.render('index')
 })
 
-app.listen(3000)
+server.listen(3000)
+
+io.sockets.on('connection', function(socket){
+  if(imagedata)
+    io.sockets.emit('data', JSON.stringify(imagedata))
+  
+  socket.on('session', function(id){
+    console.log('session received', id)
+    socket.set('session', id)
+    socket.emit('ready')
+  })
+  
+  socket.on('data', function(data){
+    console.log('received data')
+    socket.get('session', function(err, sid){
+      console.log('Got session w/ data', sid)
+      imagedata = { image: data, id: sid }
+      io.sockets.emit('data', JSON.stringify(imagedata))
+    })
+  })
+})

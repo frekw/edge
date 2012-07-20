@@ -1,21 +1,5 @@
 var jam = {
-    "packages": [
-        {
-            "name": "backbone",
-            "location": "jam/backbone",
-            "main": "backbone.js"
-        },
-        {
-            "name": "jquery",
-            "location": "jam/jquery",
-            "main": "jquery.js"
-        },
-        {
-            "name": "underscore",
-            "location": "jam/underscore",
-            "main": "underscore.js"
-        }
-    ],
+    "packages": [],
     "version": "0.1.14",
     "shim": {}
 };

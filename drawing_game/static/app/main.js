@@ -1,4 +1,37 @@
-define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
+define(['backbone', 'underscore', 'app/util', 'socket.io/socket.io'], function(bb, _, util){
+  
+  var socket = io.connect('/')
+    , sid     = Math.random().toString(36).substr(2,9) // TODO: Poor solution, find a better one.
+    
+  socket.on('connect', function(){
+    socket.emit('session', sid)
+  })
+  
+  socket.on('ready', function(){
+    console.log('socket.io is ready')
+  })
+  
+  socket.on('data', function(data){
+    var data = JSON.parse(data)
+    
+    console.log('ids', sid, data.id)
+    
+    if(data.id == sid) return
+    
+    console.log('draw data...')
+    
+    var canvas = $('#canvas')[0]
+      , img = new Image()
+      , ctx = canvas.getContext('2d');
+    img.src = data.image
+    img.onload = function(){
+      ctx.drawImage(img, 0, 0)
+      img.onload = null
+      img = null
+    }
+    
+  });
+  
   return bb.View.extend({
     events: function(){
       if(util.hasTouch)
@@ -42,18 +75,16 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
       var coords = this.getCoordinates(e)
       this.ctx.lineTo(coords.x, coords.y)
       this.ctx.stroke()
-      
     }
     
   , didStopDrawing: function(e){
       e.preventDefault()
       this.didDraw(e)
       this.isDrawing = false
-      
-      console.log(this.ctx.getImageData(0, 0, this.el.width, this.el.height))
+      socket.emit('data', this.el.toDataURL());
     }
   , getCoordinates: function(e){
-      if(e.originalEvent.targetTouches)
+      if(e.originalEvent.targetTouches && e.originalEvent.targetTouches.length)
         return { x: e.originalEvent.targetTouches[0].clientX, y: e.originalEvent.targetTouches[0].clientY}
       else
         return { x: e.clientX, y: e.clientY}
