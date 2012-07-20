@@ -1,0 +1,17 @@
+doctype 5
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        link(href="/css/screen.css", rel="stylesheet", type="text/css")
+        script(src="/jam/require.js")
+        meta(name="viewport", content="width=device-width, user-scalable=no initial-scale=1.0, minimum-scale=1.0")
+    body
+        block content
+        script
+            require(['jquery', 'app/main', 'app/util'], function($, Main, util){
+            if(util.hasTouch)
+                $('html').addClass('has-touch')
+
+                console.log('Main', Main)
+                new Main({ el: '#canvas' });
+            })
