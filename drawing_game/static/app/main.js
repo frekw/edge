@@ -12,7 +12,6 @@ define(['backbone', 'underscore', 'app/util', 'socket.io/socket.io'], function(b
   })
   
   socket.on('data', function(data){
-    var data = JSON.parse(data)
     
     console.log('ids', sid, data.id)
     

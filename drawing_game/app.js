@@ -25,7 +25,7 @@ server.listen(3000)
 
 io.sockets.on('connection', function(socket){
   if(imagedata)
-    io.sockets.emit('data', JSON.stringify(imagedata))
+    io.sockets.emit('data', imagedata)
   
   socket.on('session', function(id){
     console.log('session received', id)
@@ -38,7 +38,7 @@ io.sockets.on('connection', function(socket){
     socket.get('session', function(err, sid){
       console.log('Got session w/ data', sid)
       imagedata = { image: data, id: sid }
-      io.sockets.emit('data', JSON.stringify(imagedata))
+      io.sockets.emit('data', imagedata)
     })
   })
 })
