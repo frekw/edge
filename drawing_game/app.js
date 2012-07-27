@@ -30,7 +30,7 @@ var players = []
   , rooms   = []
   
 findRoom = function(player, socket){
-  socket.emit('room:join', {id: 1, parts: [{player: 'Fredrik'}, {player: 'Calle'}, {player: 'Tina'}, {player: 'Anna'}, {player: 'Jonas'}]})
+  socket.emit('room:join', {id: 1, currentPiece: 1, pieces: [{player: 'Fredrik'}, {player: 'Calle'}, {player: 'Tina'}, {player: 'Anna'}, {player: 'Jonas'}]})
 }
 
 io.sockets.on('connection', function(socket){

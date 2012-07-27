@@ -15,6 +15,10 @@ html(lang="en")
               include templates/loading
             template(id="dialog"):
               include templates/dialog
+            template(id="game"):
+              include templates/game
+            template(id="piece"):
+              include templates/piece
         script
             require(['jquery', 'app/main', 'app/util'], function($, Main, util){
                 new Main();
