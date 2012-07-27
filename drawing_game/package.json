@@ -4,7 +4,8 @@
   
   "dependencies": {
     "socket.io": "0.9.x",
-    "express": "3.0.0beta7",
-    "jade": "0.26.x"
+    "express": "3.0.0rc1",
+    "jade": "0.26.x",
+    "jadevu": "git://github.com/LearnBoost/jadevu.git#master"
   }
 }

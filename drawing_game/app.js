@@ -3,6 +3,8 @@ var express = require('express')
   , app     = express()
   , server  = http.createServer(app)
   , io      = require('socket.io').listen(server)
+  , jade    = require('jade')
+  , jadevu  = require('jadevu')
   , imagedata
   
 // TODO: Split conf. into dev and prod.
@@ -13,8 +15,9 @@ app.configure(function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStacktrace: true }))
   app.set('views', __dirname + '/views')
   app.set('view engine', 'jade')
-  app.set('view options', { layout: true })
   app.use(app.router)
+  
+  app.locals.pretty = true
 })
 
 app.get('/', function(req, res, next){
@@ -23,15 +26,32 @@ app.get('/', function(req, res, next){
 
 server.listen(3000)
 
+var players = []
+  , rooms   = []
+  
+findRoom = function(player, socket){
+  socket.emit('room:join', {id: 1, parts: [{player: 'Fredrik'}, {player: 'Calle'}, {player: 'Tina'}, {player: 'Anna'}, {player: 'Jonas'}]})
+}
+
 io.sockets.on('connection', function(socket){
+  socket.emit('ready')
+  
+  socket.on('player:create', function(player){
+    console.log('player created', player)
+    players.push(player)
+    findRoom(player, socket)
+  })
+  
   if(imagedata)
     io.sockets.emit('data', imagedata)
   
   socket.on('session', function(id){
     console.log('session received', id)
     socket.set('session', id)
-    socket.emit('ready')
   })
+  
+  
+  // Use broadcast instead of session ids.
   
   socket.on('data', function(data){
     console.log('received data')

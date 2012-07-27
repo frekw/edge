@@ -1,6 +1,43 @@
-define(['backbone', 'underscore', 'app/util', 'socket.io/socket.io'], function(bb, _, util){
+define(['socket.io/socket.io', 'app/models/player_model', 'app/views/splash_view', 'app/views/game_view', 'app/util'], 
+  function(dummy, players, SplashView, GameView, util){
+
+  var Main = function(){
+    var mediator   = _.extend({}, Backbone.Events)
+      , socket     = io.connect('/')
+      , splashView = new SplashView({mediator: mediator})
+      , mainView
+
+    socket.on('ready', function(){
+      mediator.trigger('socket:ready')
+    })
+    
+    socket.on('room:join', function(data){
+      console.log('Room: ', data)
+      mediator.trigger('room:join', data)
+      mainView = new GameView({mediator: mediator})
+      
+      /* Here we should:
+       * 1. Start listening to the room's channel.
+       * 2. Setup the game view.
+       */
+      
+    })
+    
+    mediator.on('player:create', function(player){
+      this.player = player;
+      console.log('start the game in main')
+    })
+    
+    if(util.hasTouch)
+        $('html').addClass('has-touch')
+  }
   
-  var socket = io.connect('/')
+  return Main;
+  
+  
+  
+  
+/*  var socket = io.connect('/')
     , sid     = Math.random().toString(36).substr(2,9) // TODO: Poor solution, find a better one.
     
   socket.on('connect', function(){
@@ -29,64 +66,5 @@ define(['backbone', 'underscore', 'app/util', 'socket.io/socket.io'], function(b
       img = null
     }
     
-  });
-  
-  return bb.View.extend({
-    events: function(){
-      if(util.hasTouch)
-        return {
-          'touchstart': 'didStartDrawing'
-        , 'touchmove': 'didDraw'
-        , 'touchend': 'didStopDrawing'
-        }
-      else
-        return {
-          'mousedown': 'didStartDrawing'
-        , 'mousemove': 'didDraw'
-        , 'mouseup': 'didStopDrawing'
-        }
-    }
-  , isDrawing: false
-    
-  , initialize: function(args){
-      _.bindAll(this, 'didStopDrawing', 'didStartDrawing', 'didDraw')
-      this.thickness = args.thickness || 3
-      this.color     = args.color || 'black'
-      
-      this.ctx             = this.el.getContext('2d');
-      this.ctx.strokeStyle = this.color
-      this.ctx.lineWidth   = this.thickness
-      this.lineCap         = 'round'
-      this.lineJoin        = 'round'
-    }
-    
-  , didStartDrawing: function(e){
-      e.preventDefault()
-      var coords = this.getCoordinates(e)
-      this.ctx.beginPath()
-      this.ctx.moveTo(e.x, e.y)
-      this.isDrawing = true
-    }
-    
-  , didDraw: function(e){
-      e.preventDefault()
-      if(!this.isDrawing) return
-      var coords = this.getCoordinates(e)
-      this.ctx.lineTo(coords.x, coords.y)
-      this.ctx.stroke()
-    }
-    
-  , didStopDrawing: function(e){
-      e.preventDefault()
-      this.didDraw(e)
-      this.isDrawing = false
-      socket.emit('data', this.el.toDataURL());
-    }
-  , getCoordinates: function(e){
-      if(e.originalEvent.targetTouches && e.originalEvent.targetTouches.length)
-        return { x: e.originalEvent.targetTouches[0].clientX, y: e.originalEvent.targetTouches[0].clientY}
-      else
-        return { x: e.clientX, y: e.clientY}
-    }    
-  })
+  });*/
 })

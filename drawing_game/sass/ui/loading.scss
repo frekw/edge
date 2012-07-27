@@ -1,0 +1,50 @@
+@import "compass";
+@import "animation";
+
+@include keyframes(infinite-spin){
+  0% {
+    @include rotate(0);
+  }
+  100% {
+    @include rotate(360deg);
+  }
+}
+
+@include keyframes(pulsate){
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+
+.loading-view {
+  $h:image-height('edge.png');
+  $w:image-width('edge.png');
+  position:absolute; top:50%; left:50%;
+  margin-top:-$h; margin-left:-$w/2;
+  
+  text-align:center; font-weight:bold;
+  font-size:10px; text-transform:uppercase; color:lighten(#000, 60%);
+  
+  .loader {
+    background:inline-image('edge.png');
+    width:$w; height:$h; margin-bottom:25px;
+    @include animation(infinite-spin 2s infinite linear);
+  }
+  
+  .pulsate {
+    @include animation(pulsate 1250ms infinite);
+  }
+  .delay-1 {
+    @include animation-delay(250ms);
+  }
+  .delay-2 {
+    @include animation-delay(500ms);
+  }
+  .delay-3 {
+    @include animation-delay(750ms);
+  }
+}

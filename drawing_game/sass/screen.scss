@@ -4,6 +4,13 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
+@import "lib/animate";
+
+@import "ui/form";
+@import "ui/buttons";
+@import "ui/loading";
+@import "ui/dialog";
+@import "ui/tooltip";
 
 /*#canvas {
   position:absolute;
@@ -12,4 +19,22 @@
 
 html, body { margin:0; padding:0; }
 
-#canvas { border:1px solid black; }
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  text-shadow:0 1px 0 rgba(255,255,255,.75);
+  color:lighten(#000, 5%);
+  background:white;
+}
+
+h1, h2, h3, h4, h5, h6 { color:lighten(#000, 20%); }
+
+h2 { font-size:24px; font-weight:bold; }
+
+.piece { border:10px solid white; background:inline-image('grid.png');
+  @include box-shadow(0 0 0 1px $border, 0 0 15px rgba(0,0,0,.1));
+}
+
+#overlay {
+  background:rgba(255,255,255,.9);
+  position:fixed; top:0; right:0; left:0; bottom:0;
+}

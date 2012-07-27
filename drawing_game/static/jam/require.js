@@ -2037,6 +2037,11 @@ var jam = {
             "main": "backbone.js"
         },
         {
+            "name": "handlebars",
+            "location": "jam/handlebars",
+            "main": "handlebars.js"
+        },
+        {
             "name": "jquery",
             "location": "jam/jquery",
             "main": "jquery.js"

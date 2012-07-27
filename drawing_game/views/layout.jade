@@ -7,11 +7,15 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, user-scalable=no initial-scale=1.0, minimum-scale=1.0")
     body
         block content
+        
+        block footer
+            template(id="overlay"):
+              include templates/overlay
+            template(id="loading"):
+              include templates/loading
+            template(id="dialog"):
+              include templates/dialog
         script
             require(['jquery', 'app/main', 'app/util'], function($, Main, util){
-            if(util.hasTouch)
-                $('html').addClass('has-touch')
-
-                console.log('Main', Main)
-                new Main({ el: '#canvas' });
+                new Main();
             })
