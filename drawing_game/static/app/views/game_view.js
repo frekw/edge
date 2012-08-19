@@ -12,8 +12,9 @@ define(['backbone', 'underscore', 'app/views/piece_view'], function(bb, _, Piece
       
       this.pieces = []
       
-      for(i = 0, len = this.model.pieces.length; i < len; i ++){
-        var view = new PieceView({model: this.model.pieces[i]})
+      for(i = 0, len = this.model.slots; i < len; i ++){
+        //var view = new PieceView({model: this.model.pieces[i]})
+        var view = new PieceView({model: {}})
         this.pieces.push(view)
         this.$('.pieces').append(view.el)
       }

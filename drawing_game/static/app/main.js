@@ -11,9 +11,9 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/room_model
       mediator.trigger('socket:ready')
     })
     
-    socket.on('room:join', function(data){
+    socket.on('game:join', function(data){
       console.log('Room: ', data)
-      mediator.trigger('room:join', data)
+      mediator.trigger('game:join', data)
       
       
       /* Here we should:

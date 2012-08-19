@@ -37,7 +37,7 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
       this.ctx.strokeStyle = this.color
       this.ctx.lineWidth   = this.thickness
       
-      this._setRandomRotation()
+      //this._setRandomRotation()
     }
     
   , _setRandomRotation: function(){

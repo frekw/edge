@@ -5,6 +5,7 @@ var express = require('express')
   , io      = require('socket.io').listen(server)
   , jade    = require('jade')
   , jadevu  = require('jadevu')
+  , Game    = require('./models/game')
   , imagedata
   
 // TODO: Split conf. into dev and prod.
@@ -29,36 +30,35 @@ server.listen(3000)
 var players = []
   , rooms   = []
   
-findRoom = function(player, socket){
-  socket.emit('room:join', {id: 1, currentPiece: 1, pieces: [{player: 'Fredrik'}, {player: 'Calle'}, {player: 'Tina'}, {player: 'Anna'}, {player: 'Jonas'}]})
-}
-
 io.sockets.on('connection', function(socket){
   socket.emit('ready')
   
   socket.on('player:create', function(player){
-    console.log('player created', player)
-    players.push(player)
-    findRoom(player, socket)
+    var game = Game.findGame()
+    game.add({
+      name: player.name
+    , socket: socket
+    })
+    console.log('player created', player, game)
   })
   
-  if(imagedata)
-    io.sockets.emit('data', imagedata)
+  /*if(imagedata)
+    io.sockets.emit('data', imagedata)*/
   
-  socket.on('session', function(id){
+  /*socket.on('session', function(id){
     console.log('session received', id)
     socket.set('session', id)
-  })
+  })*/  
   
   
   // Use broadcast instead of session ids.
   
-  socket.on('data', function(data){
+  /*socket.on('data', function(data){
     console.log('received data')
     socket.get('session', function(err, sid){
       console.log('Got session w/ data', sid)
       imagedata = { image: data, id: sid }
       io.sockets.emit('data', imagedata)
     })
-  })
+  })*/
 })

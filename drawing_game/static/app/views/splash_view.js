@@ -16,7 +16,7 @@ function(bb, _, ModalView, LoadingView, DialogView, players){
       
       this.dialog.on('create', this.didCreatePlayer)
       this.mediator.on('socket:ready', this.didConnect)
-      this.mediator.on('room:join', this.didJoinRoom)
+      this.mediator.on('game:join', this.didJoinRoom)
     }
     
   , didCreatePlayer: function(data){
