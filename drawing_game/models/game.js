@@ -9,7 +9,7 @@ var Game = function(){
   }]
   */
   this._players = []
-  for(var i = 0; i < Game.MAX_COUNT - 1; i++)
+  for(var i = 0; i < Game.MAX_COUNT; i++)
     this._players[i] = null
   
   /*
@@ -42,8 +42,9 @@ Game.prototype.isFull = function(){
 Game.prototype.availableSlots = function(){
   // TODO: compensate for the current turn (?)
   var available = []
-  for(var i = 0, len = this._players.length; i < len; i++)
+  for(var i = 0, len = this._players.length; i < len; i++){
     if(!this._players[i]) available.push(i)
+  }
   return available
   
   /*
@@ -56,7 +57,8 @@ Game.prototype.availableSlots = function(){
 }
 
 Game.prototype.add = function(player){
-  this._players.push(player)
+  var slot = this.availableSlots()[0];
+  this._players[slot] = player
   this.bindEvents(player)
   player.socket.emit('game:join', this.serialize())
 }
