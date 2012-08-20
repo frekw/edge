@@ -1,5 +1,5 @@
-define(['socket.io/socket.io', 'app/models/player_model', 'app/models/room_model', 'app/views/splash_view', 'app/views/game_view', 'app/util'], 
-  function(dummy, players, room, SplashView, GameView, util){
+define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model', 'app/views/splash_view', 'app/views/game_view', 'app/util'], 
+  function(dummy, players, game, SplashView, GameView, util){
 
   var Main = function(){
     var mediator   = _.extend({}, Backbone.Events)
@@ -17,11 +17,11 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/room_model
       
       
       /* Here we should:
-       * 1. Start listening to the room's channel. (which the room.Room should take care of)
+       * 1. Start listening to the game's channel. (which the room.Room should take care of)
        * 2. Setup the game view.
        */
        
-      var joined = new room.Room(data)
+      var joined = new game.Game(data, socket)
       mainView = new GameView({mediator: mediator, model: joined})
       mainView.$el.appendTo('body')
       

@@ -34,6 +34,7 @@ io.sockets.on('connection', function(socket){
   socket.emit('ready')
   
   socket.on('player:create', function(player){
+    console.log('Player data:', player)
     var game = Game.findGame()
     game.add({
       name: player.name

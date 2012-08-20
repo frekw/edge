@@ -9,7 +9,7 @@ var Game = function(){
   }]
   */
   this._players = []
-  for(var i = 0; i < Game.MAX_COUNT; i++)
+  for(var i = 0; i < Game.MAX_COUNT - 1; i++)
     this._players[i] = null
   
   /*
@@ -70,7 +70,7 @@ Game.prototype.remove = function(player){
 Game.prototype.bindEvents = function(player){
   var socket = player.socket
   if(!socket) return
-  socket.on('game:turn:done', this.didReceiveData.bind(this))
+  socket.on('game:turn:next', this.didReceiveData.bind(this))
   socket.on('disconnect', function(){
     this.remove(player)
   }, this)
@@ -79,7 +79,7 @@ Game.prototype.bindEvents = function(player){
 Game.prototype.unbindEvents = function(player){
   var socket = player.socket
   if(!socket) return
-  socket.off('game:turn:done')
+  socket.off('game:turn:next')
   socket.off('disconnect')
 }
 
@@ -102,6 +102,7 @@ Game.prototype.nextTurn = function(){
 Game.prototype.serialize = function(){
   return {
     turn: this._turn
+  , players: this._players.map(function(player){ return player ? player.name : undefined })
   , data: this._data
   , slots: Game.MAX_COUNT
   }
