@@ -62,7 +62,11 @@ Game.prototype.add = function(player){
   var slot = this.availableSlots()[0];
   this._players[slot] = player
   this.bindEvents(player)
-  player.socket.emit('game:join', this.serialize())
+  
+  var data = this.serialize()
+  data.slot = slot // we need to get the slot to the connected client.
+  
+  player.socket.emit('game:join', data)
   this.broadcast('game:player:joined', this.serialize())
 }
 
@@ -76,12 +80,15 @@ Game.prototype.bindEvents = function(player){
   var socket = player.socket
     , self   = this
   if(!socket) return
-  socket.on('game:turn:next', this.didReceiveData.bind(this))
+  socket.on('game:turn:next', function(data){
+    self.nextTurn()
+    self.didReceiveData(data)
+  })
   socket.on('disconnect', function(){ self.remove(player) })
 }
 
 Game.prototype.didReceiveData = function(data){
-  this.data.push(data)
+  this._data.push(data)
   this.nextTurn();
 }
 

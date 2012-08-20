@@ -21,7 +21,7 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model
        * 2. Setup the game view.
        */
        
-      var joined = new game.Game(data, socket)
+      var joined = new game.Game(data, data.slot, socket)
       mainView = new GameView({mediator: mediator, model: joined})
       mainView.$el.appendTo('body')
       

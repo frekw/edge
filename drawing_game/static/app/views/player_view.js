@@ -22,11 +22,13 @@ define(['underscore', 'backbone'], function(_, bb){
       this.$el.html('')
       console.log('le model', this.model)
       _.each(this.model.players, function(player){
-        this.$el.append(template('player'), player)
-      }, this)
+        if(player) this.$el.append(template('player'), player)
+      }, this)      
+      
       return this
     }
   })
+  
   
   return PlayerView
 })

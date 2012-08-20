@@ -1,10 +1,18 @@
 define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view'], function(bb, _, PieceView, PlayerView){
   return bb.View.extend({
-    initialize: function(opts){
+    events: {
+      'click a.button': 'didFinishTurn'
+    }
+    
+  , initialize: function(opts){
       console.log('GameView#init')
-      _.bindAll(this, 'render', 'update')
+      _.bindAll(this, 'render', 'didFinishTurn')
       
-      this.model.on('change', this.update)      
+      this.model.on('change:data', this.render)
+      this.model.on('change:turn', this.render)
+      this.model.on('change:turn', function(){
+        alert('change turn! ' + this.model.turn)
+      }, this)
       this.render()
     }
   , render: function(){
@@ -19,11 +27,18 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
         this.$('.pieces').append(view.el)
       }
       
+      if(this.model.turn !== this.model.slot) this.$('a.button').remove()
+      
       var playerView = new PlayerView({model: this.model})
       playerView.$el.appendTo(this.$el)
       
     }
-  , update: function(){
+  , didFinishTurn: function(){
+      this.model.endTurn(this.serialize())
+    }
+
+  , serialize: function(){
+      return {a:'b'}
     }
   })
 })

@@ -1,24 +1,19 @@
 define(['backbone', 'underscore'], function(bb, _){
-  var Game = function(data, socket){
+  var Game = function(data, slot, socket){
     console.log('Game#init', data)
     
     _.bindAll(this, 'didFinishTurn', 'didFinishRound', 'playerJoined', 'playerLeft')
     
-    this.socket = socket
-    this.data = data.data
-    this.turn = data.turn
-    this.slots = data.slots
+    this.socket  = socket
+    this.slot    = slot
     this.players = data.players
     
+    this.update(data)
     
-    var self = this
     this.socket.on('game:turn:next', this.didFinishTurn)
     this.socket.on('game:reset', this.didFinishRound)
     this.socket.on('game:player:joined', this.playerJoined)
     this.socket.on('game:player:left', this.playerLeft)
-
-    
-    this.socket.emit('WTF')
   }
   
   _.extend(Game.prototype, Backbone.Events)
@@ -33,6 +28,12 @@ define(['backbone', 'underscore'], function(bb, _){
     this.turn = data.turn
     this.slots = data.slots
     console.log('Game#update', data)
+    
+    this.trigger('change:data')
+  }
+  
+  Game.prototype.endTurn = function(){
+    this.socket.emit('game:turn:next')
   }
   
   
@@ -44,7 +45,7 @@ define(['backbone', 'underscore'], function(bb, _){
 
   Game.prototype.updatePlayers = function(data) {
     this.players = data.players
-    this.trigger('changed:players')
+    this.trigger('change:players')
   }
   
   
@@ -60,7 +61,7 @@ define(['backbone', 'underscore'], function(bb, _){
   
   Game.prototype.didFinishTurn = function(data){
     this.update(data)
-    this.trigger('changed:turn')
+    this.trigger('change:turn')
   }
   
   Game.prototype.didFinishRound = function(data){
