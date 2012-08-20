@@ -1,3 +1,5 @@
+
+
 var Game = function(){
   
   /*
@@ -61,30 +63,22 @@ Game.prototype.add = function(player){
   this._players[slot] = player
   this.bindEvents(player)
   player.socket.emit('game:join', this.serialize())
+  this.broadcast('game:player:joined', this.serialize())
 }
 
 Game.prototype.remove = function(player){
   var index = this._players.indexOf(player)
   this._players.splice(index, 1)
-  this.unbindEvents(player)
+  this.broadcast('game:player:left', this.serialize())
 }
 
 Game.prototype.bindEvents = function(player){
   var socket = player.socket
+    , self   = this
   if(!socket) return
   socket.on('game:turn:next', this.didReceiveData.bind(this))
-  socket.on('disconnect', function(){
-    this.remove(player)
-  }, this)
+  socket.on('disconnect', function(){ self.remove(player) })
 }
-
-Game.prototype.unbindEvents = function(player){
-  var socket = player.socket
-  if(!socket) return
-  socket.off('game:turn:next')
-  socket.off('disconnect')
-}
-
 
 Game.prototype.didReceiveData = function(data){
   this.data.push(data)
@@ -111,9 +105,9 @@ Game.prototype.serialize = function(){
 }
 
 Game.prototype.broadcast = function(message, data){
-  this._players.each(function(player){
-    if(!(player && player.socket)) return
-    player.socket.emit(message, data)
+  this._players.forEach(function(player){
+    if(player)
+      player.socket.emit(message, data)
   })
   return this
 }

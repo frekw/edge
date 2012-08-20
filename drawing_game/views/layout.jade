@@ -19,6 +19,8 @@ html(lang="en")
               include templates/game
             template(id="piece"):
               include templates/piece
+            template(id="player"):
+              include templates/player
         script
             require(['jquery', 'app/main', 'app/util'], function($, Main, util){
                 new Main();

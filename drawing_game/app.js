@@ -21,7 +21,7 @@ app.configure(function(){
   app.locals.pretty = true
 })
 
-io.set('log level', 1);
+//io.set('log level', 1);
 
 app.get('/', function(req, res, next){
   res.render('index')

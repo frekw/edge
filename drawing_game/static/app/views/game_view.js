@@ -1,4 +1,4 @@
-define(['backbone', 'underscore', 'app/views/piece_view'], function(bb, _, PieceView){
+define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view'], function(bb, _, PieceView, PlayerView){
   return bb.View.extend({
     initialize: function(opts){
       console.log('GameView#init')
@@ -18,6 +18,9 @@ define(['backbone', 'underscore', 'app/views/piece_view'], function(bb, _, Piece
         this.pieces.push(view)
         this.$('.pieces').append(view.el)
       }
+      
+      var playerView = new PlayerView({model: this.model})
+      playerView.$el.appendTo(this.$el)
       
     }
   , update: function(){
