@@ -81,8 +81,8 @@ Game.prototype.bindEvents = function(player){
     , self   = this
   if(!socket) return
   socket.on('game:turn:next', function(data){
-    self.nextTurn()
     self.didReceiveData(data)
+    self.nextTurn()
   })
   socket.on('disconnect', function(){ self.remove(player) })
 }

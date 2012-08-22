@@ -23,7 +23,7 @@ define(['backbone', 'underscore'], function(bb, _){
     2. Update game state
     2. Notify listeners (views)
     */
-    this.data = data.data
+    this._data = data.data
     this.turn = data.turn
     this.slots = data.slots
     
@@ -62,7 +62,6 @@ define(['backbone', 'underscore'], function(bb, _){
   }
   
   Game.prototype.didFinishTurn = function(data){
-    console.log('data received', data)
     this.turn  = data.turn
     this._data = data.data
     this.trigger('change:turn')

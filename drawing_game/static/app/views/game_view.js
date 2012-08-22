@@ -26,9 +26,9 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
         if(i < this.model.slot) view.deactivate('above')
         if(i > this.model.slot) view.deactivate('below')
         
-        console.log('render', this.model, !!this.model.data[i])
+        console.log('has data?', !!this.model._data[i], this.model, i)
         
-        if(this.model.data[i]) view.canvas.draw(this.model.data[i])
+        if(this.model._data[i]) view.canvas.draw(this.model._data[i])
         
         this.pieces.push(view)
         this.$('.pieces').append(view.el)
