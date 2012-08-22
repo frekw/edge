@@ -1,17 +1,17 @@
 define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view'], function(bb, _, PieceView, PlayerView){
   return bb.View.extend({
     events: {
-      'click a.button': 'didFinishTurn'
+      'click a.button': 'didClickNext'
     }
     
   , initialize: function(opts){
       console.log('GameView#init')
-      _.bindAll(this, 'render', 'didFinishTurn')
+      _.bindAll(this, 'render', 'didClickNext')
       
       this.model.on('change:data', this.render)
       this.model.on('change:turn', this.render)
       this.model.on('change:turn', function(){
-        alert('change turn! ' + this.model.turn)
+        console.log('change turn! ' + this.model.turn)
       }, this)
       this.render()
     }
@@ -33,7 +33,7 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       playerView.$el.appendTo(this.$el)
       
     }
-  , didFinishTurn: function(){
+  , didClickNext: function(){
       this.model.endTurn(this.serialize())
     }
 

@@ -89,11 +89,10 @@ Game.prototype.bindEvents = function(player){
 
 Game.prototype.didReceiveData = function(data){
   this._data.push(data)
-  this.nextTurn();
 }
 
 Game.prototype.nextTurn = function(){
-  if(++this._turn > Game.MAX_COUNT){
+  if(++this._turn > Game.MAX_COUNT - 1){
     this._turn = 0
     this._data = []
     this.broadcast('game:reset', this.serialize())

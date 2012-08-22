@@ -60,7 +60,7 @@ define(['backbone', 'underscore'], function(bb, _){
   }
   
   Game.prototype.didFinishTurn = function(data){
-    this.update(data)
+    this.turn = data.turn
     this.trigger('change:turn')
   }
   

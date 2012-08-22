@@ -6,8 +6,8 @@ define(['underscore', 'backbone'], function(_, bb){
   , initialize: function(model){
       _.bindAll(this, 'render')
     
-      this.model.bind('changed:players', this.render)
-      this.model.bind('changed:turn', this.render)
+      this.model.bind('change:players', this.render)
+      this.model.bind('change:turn', this.render)
       this.model.bind('reset', this.render)
       
       this.render()
