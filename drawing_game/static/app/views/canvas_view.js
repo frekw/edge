@@ -18,7 +18,7 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
     }
     
   , initialize: function(args){      
-      _.bindAll(this, 'render', 'update', 'didStopDrawing', 'didStartDrawing', 'didDraw')
+      _.bindAll(this, 'render', 'draw', 'didStopDrawing', 'didStartDrawing', 'didDraw')
       this.thickness = args.thickness || 3
       this.color     = args.color || 'black'
       
@@ -51,11 +51,11 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
       })
     }
     
-  , update: function(){
+  , draw: function(data){
       var img = new Image()
         , ctx = this.canvas.getContext('2d');
       
-      img.src = this.model.data
+      img.src = data
       img.onload = function(){
         ctx.drawImage(img, 0, 0)
         img.onload = null
@@ -82,8 +82,8 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
       e.preventDefault()
       this.didDraw(e)
       this.isDrawing = false
-      // this should be synced to the model instead.
-      // socket.emit('data', this.el.toDataURL());
+      
+      this.model.drawing(this.$('canvas')[0].toDataURL())
     }
   , getCoordinates: function(e){
       if(e.originalEvent.targetTouches && e.originalEvent.targetTouches.length)
@@ -95,9 +95,8 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
       var coords = this.getCoordinates(e)
       return {
         x: coords.x - this.$el.offset().left
-      , y: coords.y - this.$el.offset().top
+      , y: coords.y - this.$el.offset().top + $(window).scrollTop()
       }
-      console.log(coords, this.$el.offset().top)
       return coords
     }
   })

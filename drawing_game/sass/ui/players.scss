@@ -1,0 +1,12 @@
+@import "compass";
+
+.player-view {
+  border:1px solid $border; position:fixed; top:0; right:0;  border-left:0;
+  font-size:10px; 
+  
+  li { padding:5px; border-left:1px solid $border; }
+  .active {
+    color:white; background:$primary; border-left:1px solid $primary;
+    @include text-shadow(0 -1px 0 rgba(0,0,0,.25));
+  }
+}

@@ -20,10 +20,10 @@ define(['underscore', 'backbone'], function(_, bb){
       */ 
       
       this.$el.html('')
-      console.log('le model', this.model)
       _.each(this.model.players, function(player){
-        if(player) this.$el.append(template('player'), player)
-      }, this)      
+        if(player) this.$el.append(template('player', { name: player }))
+      }, this)
+      this.$('li:eq(' + this.model.turn + ')').addClass('active')
       
       return this
     }

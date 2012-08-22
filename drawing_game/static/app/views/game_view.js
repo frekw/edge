@@ -10,8 +10,9 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
       this.model.on('change:data', this.render)
       this.model.on('change:turn', this.render)
+      var self = this;
       this.model.on('change:turn', function(){
-        console.log('change turn! ' + this.model.turn)
+        console.log('change turn! ', self.model)
       }, this)
       this.render()
     }
@@ -21,8 +22,14 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       this.pieces = []
       
       for(i = 0, len = this.model.slots; i < len; i ++){
-        //var view = new PieceView({model: this.model.pieces[i]})
-        var view = new PieceView({model: {}})
+        var view = new PieceView({model: this.model})
+        if(i < this.model.slot) view.deactivate('above')
+        if(i > this.model.slot) view.deactivate('below')
+        
+        console.log('render', this.model, !!this.model.data[i])
+        
+        if(this.model.data[i]) view.canvas.draw(this.model.data[i])
+        
         this.pieces.push(view)
         this.$('.pieces').append(view.el)
       }
