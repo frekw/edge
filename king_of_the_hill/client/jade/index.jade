@@ -1,0 +1,40 @@
+!!! 5
+
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0')
+
+    link(href='/style/bootstrap.min.css', rel='stylesheet', type='text/css')
+    link(href='/style/screen.css', media='screen, projection', rel='stylesheet', type='text/css')
+  body
+
+    #alerts
+      .template.hide.alert.fade.in.out
+        button.close(type='button', data-dismiss='alert') ×
+        strong.title
+        .content
+
+    #game
+      #board
+      #score
+
+    form#signup.modal.hide(tabindex=-1, role='dialog', aria-labelledby='signupLabel', aria-hidden='true')
+      .modal-header
+        h2#signupLabel Who are you?
+
+      .modal-body
+          input.span6(type='text', name='name', placeholder='Enter your name')
+          span.help-block.error
+
+      .modal-footer
+        button#signup_action.btn.btn-primary Start game
+
+  script(src='js/underscore-min.js')
+  script(src='js/jquery-1.8.0.min.js')
+  script(src='js/bootstrap.min.js')
+  script(src='js/raphael-min.js')
+  script(src='socket.io/socket.io.js')
+  script(src='browserify.js')
+  script(src='js/renderer.js')
+  script(src='js/app.js')
