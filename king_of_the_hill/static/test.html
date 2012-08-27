@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0">
+        <link href="/style/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="/style/animate.css" rel="stylesheet" type="text/css">
+        <link href="/style/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div id="alerts"></div>
+        <div id="signup"></div>
+        <div id="game"></div>
+        <footer>
+            <script src="js/jamjs/require.js"></script>
+            <script>
+              require(['raphael', 'jquery'], function(Raphael, $) {
+                var raphael = Raphael($('#game')[0]);
+                raphael.setViewBox(-100, -100, 200, 200, false);
+                var circle = raphael.circle(0, 0, 80).attr({
+                  fill   : 'r(0.4, 0.4)#cc9933-#ffee00'
+                , stroke : '#000', 'stroke-width': 1
+                });
+
+                var flash = function() {
+                  circle.stop().animate({ stroke: '#00f', 'stroke-width': 3 }, 500, 'elastic', function() {
+                    circle.animate({ stroke: '#000', 'stroke-width': 1 }, 500, 'elastic');
+                  });
+                }
+
+                var button = function(name, fn) {
+                  $('<button class="btn"></button>').text(name).click(fn).appendTo('body');
+                }
+
+                button('animate', flash);
+                button('burst', function() {
+                  setInterval(function() {
+                    flash();
+                  }, 200);
+                });
+              });
+            </script>
+        </footer>
+    </body>
+</html>

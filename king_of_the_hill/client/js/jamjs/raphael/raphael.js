@@ -222,6 +222,7 @@
     (typeof module != "undefined" && module.exports) ? (module.exports = eve) : (typeof define != "undefined" ? (define("eve", [], function() { return eve; })) : (glob.eve = eve));
 })(this);
 
+define(["eve"], function (eve) {
 
 // ┌─────────────────────────────────────────────────────────────────────┐ \\
 // │ "Raphaël 2.1.0" - JavaScript Vector Library                         │ \\
@@ -5813,3 +5814,6 @@ window.Raphael.vml && function (R) {
         })(method);
     }
 }(window.Raphael);
+
+    return window.Raphael;
+});

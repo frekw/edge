@@ -1,2 +1,9 @@
-messages.json
+client/js/jamjs/backbone/
+client/js/jamjs/events/
+client/js/jamjs/jquery/
+client/js/jamjs/require.config.js
+client/js/jamjs/require.js
+client/js/jamjs/socket.io/
+client/js/jamjs/underscore/
+static/client.js
 static/style/screen.css

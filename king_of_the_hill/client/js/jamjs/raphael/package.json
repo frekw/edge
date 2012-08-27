@@ -1,0 +1,6 @@
+{
+    "name": "raphael",
+    "version": "2.1.0",
+    "description": "From http://raphaeljs.com/",
+    "main": "raphael.js"
+}
