@@ -1,0 +1,9 @@
+{
+    "name": "bootstrap",
+    "version": "2.1.0",
+    "description": "Bootstrap taken from http://twitter.github.com/bootstrap/",
+    "main": "bootstrap.js",
+    "dependencies": {
+        "jquery": ">1.7.0"
+    }
+}

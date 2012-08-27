@@ -1,4 +1,51 @@
-#board {
-  width: 600px;
-  height: 600px;
+
+body {
+  padding-left: 0px;
+  padding-right: 0px;
 }
+
+.animated {
+  -webkit-animation-duration: .5s;
+     -moz-animation-duration: .5s;
+       -o-animation-duration: .5s;
+          animation-duration: .5s;
+}
+
+#alerts {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 888;
+  .alert {
+    margin: 2px 10px;
+    padding: 8px 35px 8px 14px;
+    background-color: #F7F7F9;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #E1E1E8;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    &.info {
+      color: #3a87ad;
+    }
+    &.success {
+      color: #468847;
+    }
+    &.warn {
+      color: #c09853;
+    }
+    &.error {
+      color: #b94a48;
+    }
+  }
+}
+
+#game {
+  background: #999;
+}
+
+@media (max-width: 767px)
+  #signup.modal.fade.in {
+    top: 30px;
+  }
