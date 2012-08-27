@@ -33,6 +33,11 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
       if(this.model.turn !== this.model.slot) this.$('a.button').remove()
       
+      this.$('#game').css('margin-top', - 480 * this.model.slot + 20)
+      
+      if(this.model.turn === this.model.slot)
+        this.$el.append('<a href="#" class="button next-button">Next</a>')
+
       var playerView = new PlayerView({model: this.model})
       playerView.$el.appendTo(this.$el)
       
@@ -40,19 +45,21 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
   , didClickNext: function(){
       this.pieces[this.model.slot].canvas.disable()
       this.model.endTurn(this.serialize())
+      console.log('btn', this.$('a.next-button'))
+      this.$('a.next-button').hide()
     }
 
   , serialize: function(){
       return {a:'b'}
     }
   , roundDidEnd: function(){
+      this.$('#game').css('margin-top', - (480 * this.model.players.length * 0.25))
       this.$('#game').addClass('finished')
-      this.$('a.button').hide()
     }
   , roundDidStart: function(){
       this.$('#game').removeClass('finished')
       this.pieces[this.model.slot].canvas.enable()
-      this.$('a.button').show()
+      this.$('a.next-button').show()
       this.render()
     }
   })

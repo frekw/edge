@@ -25,6 +25,7 @@ body {
   text-shadow:0 1px 0 rgba(255,255,255,.75);
   color:lighten(#000, 5%);
   background:white; width:320px; margin:0 auto;
+  overflow-y:hidden;
 }
 
 h1, h2, h3, h4, h5, h6 { color:lighten(#000, 20%); }

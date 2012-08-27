@@ -5249,20 +5249,21 @@ body {
   background: white;
   width: 320px;
   margin: 0 auto;
+  overflow-y: hidden;
 }
 
-/* line 30, ../../sass/screen.scss */
+/* line 31, ../../sass/screen.scss */
 h1, h2, h3, h4, h5, h6 {
   color: #333333;
 }
 
-/* line 32, ../../sass/screen.scss */
+/* line 33, ../../sass/screen.scss */
 h2 {
   font-size: 24px;
   font-weight: bold;
 }
 
-/* line 34, ../../sass/screen.scss */
+/* line 35, ../../sass/screen.scss */
 .pieces {
   border: 10px solid white;
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAIAAAC0tAIdAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RkI5RTExMDZEMDU0MTFFMTgyQURCRTgyMDcxRkM2NzIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RkI5RTExMDdEMDU0MTFFMTgyQURCRTgyMDcxRkM2NzIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpERjRDQUNBRkQwNTQxMUUxODJBREJFODIwNzFGQzY3MiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpERjRDQUNCMEQwNTQxMUUxODJBREJFODIwNzFGQzY3MiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pu7dwZkAAAAjSURBVHjaYvz+/TsD0YAFiDk4OIhUzcRAChhVPaqaGAAQYAAz+AMd9NuvvgAAAABJRU5ErkJggg==');
@@ -5272,13 +5273,13 @@ h2 {
   -moz-box-shadow: 0 0 0 1px #d9d9d9, 0 0 15px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 0 1px #d9d9d9, 0 0 15px rgba(0, 0, 0, 0.1);
 }
-/* line 38, ../../sass/screen.scss */
+/* line 39, ../../sass/screen.scss */
 .pieces .piece {
   display: inline-block;
   /*width:320px - 20px; height:480px - 20px;*/
   position: relative;
 }
-/* line 40, ../../sass/screen.scss */
+/* line 41, ../../sass/screen.scss */
 .pieces .conceal {
   position: absolute;
   left: 0;
@@ -5290,18 +5291,18 @@ h2 {
   -o-transition: all 400ms ease-in;
   transition: all 400ms ease-in;
 }
-/* line 43, ../../sass/screen.scss */
+/* line 44, ../../sass/screen.scss */
 .pieces .conceal.above {
   top: 0;
   bottom: 10px;
 }
-/* line 44, ../../sass/screen.scss */
+/* line 45, ../../sass/screen.scss */
 .pieces .conceal.below {
   bottom: 0;
   top: 10px;
 }
 
-/* line 47, ../../sass/screen.scss */
+/* line 48, ../../sass/screen.scss */
 #overlay {
   background: rgba(255, 255, 255, 0.9);
   position: fixed;
@@ -5311,14 +5312,14 @@ h2 {
   bottom: 0;
 }
 
-/* line 52, ../../sass/screen.scss */
+/* line 53, ../../sass/screen.scss */
 .next-button {
   position: fixed;
   right: 5px;
   bottom: 5px;
 }
 
-/* line 54, ../../sass/screen.scss */
+/* line 55, ../../sass/screen.scss */
 #game {
   -webkit-transition: all 400ms ease-in-out;
   -moz-transition: all 400ms ease-in-out;
@@ -5331,7 +5332,7 @@ h2 {
   -o-transform: scale(1, 1);
   transform: scale(1, 1);
 }
-/* line 58, ../../sass/screen.scss */
+/* line 59, ../../sass/screen.scss */
 #game.finished {
   -webkit-transform: scale(0.333, 0.333);
   -moz-transform: scale(0.333, 0.333);
@@ -5340,7 +5341,7 @@ h2 {
   transform: scale(0.333, 0.333);
 }
 
-/* line 63, ../../sass/screen.scss */
+/* line 64, ../../sass/screen.scss */
 #game.finished .conceal {
   opacity: 0;
 }

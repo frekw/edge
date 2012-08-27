@@ -71,7 +71,6 @@ define(['backbone', 'underscore'], function(bb, _){
   Game.prototype.didStartRound = function(data) {
     this.turn  = data.turn
     this._data = data.data
-    console.log('what\'s this?', this)
     this.trigger('round:start')
   }
   
