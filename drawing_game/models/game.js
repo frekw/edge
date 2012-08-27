@@ -24,6 +24,7 @@ var Game = function(){
 }
 
 Game.MAX_COUNT = 2
+Game.TIME_BETWEEN_ROUNDS = 5 * 1000; // milliseconds
 Game._games = []
 
 Game.findGame = function(){
@@ -93,13 +94,19 @@ Game.prototype.didReceiveData = function(data){
 
 Game.prototype.nextTurn = function(){
   if(++this._turn > Game.MAX_COUNT - 1){
-    this._turn = 0
-    this._data = []
-    this.broadcast('game:reset', this.serialize())
+    this.broadcast('game:end', Game.TIME_BETWEEN_ROUNDS)
+    setTimeout(this.reset.bind(this), Game.TIME_BETWEEN_ROUNDS)
   } else {
     this.broadcast('game:turn:next', this.serialize())
   }
 }
+
+Game.prototype.reset = function() {
+  this._turn = 0
+  this._data = []
+  this.broadcast('game:reset', this.serialize())
+};
+
 
 Game.prototype.serialize = function(){
   return {

@@ -1,6 +1,7 @@
 define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
   return bb.View.extend({
     isDrawing: false
+  , isDisabled: false
     
   , events: function(){
       if(util.hasTouch)
@@ -64,6 +65,7 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
     }
   , didStartDrawing: function(e){
       e.preventDefault()
+      if(this.isDisabled) return
       var coords = this.getNormalizedCoordinates(e)
       this.ctx.beginPath()
       this.ctx.moveTo(e.x, e.y)
@@ -72,7 +74,7 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
 
   , didDraw: function(e){
       e.preventDefault()
-      if(!this.isDrawing) return
+      if(!this.isDrawing || this.isDisabled) return
       var coords = this.getNormalizedCoordinates(e)
       this.ctx.lineTo(coords.x, coords.y)
       this.ctx.stroke()
@@ -80,6 +82,7 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
 
   , didStopDrawing: function(e){
       e.preventDefault()
+      if(this.isDisabled) return
       this.didDraw(e)
       this.isDrawing = false
       
@@ -98,6 +101,14 @@ define(['backbone', 'underscore', 'app/util'], function(bb, _, util){
       , y: coords.y - this.$el.offset().top + $(window).scrollTop()
       }
       return coords
+    }
+  , disable: function(){
+      this.isDisabled = true
+      return this
+    }
+  , enable: function(){
+      this.isDisabled = false
+      return this
     }
   })
 })

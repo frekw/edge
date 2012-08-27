@@ -5284,19 +5284,24 @@ h2 {
   left: 0;
   right: 0;
   background: white;
+  -webkit-transition: all 400ms ease-in;
+  -moz-transition: all 400ms ease-in;
+  -ms-transition: all 400ms ease-in;
+  -o-transition: all 400ms ease-in;
+  transition: all 400ms ease-in;
 }
-/* line 41, ../../sass/screen.scss */
+/* line 43, ../../sass/screen.scss */
 .pieces .conceal.above {
   top: 0;
   bottom: 10px;
 }
-/* line 42, ../../sass/screen.scss */
+/* line 44, ../../sass/screen.scss */
 .pieces .conceal.below {
   bottom: 0;
   top: 10px;
 }
 
-/* line 45, ../../sass/screen.scss */
+/* line 47, ../../sass/screen.scss */
 #overlay {
   background: rgba(255, 255, 255, 0.9);
   position: fixed;
@@ -5306,9 +5311,36 @@ h2 {
   bottom: 0;
 }
 
-/* line 50, ../../sass/screen.scss */
+/* line 52, ../../sass/screen.scss */
 .next-button {
   position: fixed;
   right: 5px;
   bottom: 5px;
+}
+
+/* line 54, ../../sass/screen.scss */
+#game {
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -ms-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  -webkit-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+/* line 58, ../../sass/screen.scss */
+#game.finished {
+  -webkit-transform: scale(0.333, 0.333);
+  -moz-transform: scale(0.333, 0.333);
+  -ms-transform: scale(0.333, 0.333);
+  -o-transform: scale(0.333, 0.333);
+  transform: scale(0.333, 0.333);
+}
+
+/* line 63, ../../sass/screen.scss */
+#game.finished .conceal {
+  opacity: 0;
 }

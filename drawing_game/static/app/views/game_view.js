@@ -6,14 +6,13 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
     
   , initialize: function(opts){
       console.log('GameView#init')
-      _.bindAll(this, 'render', 'didClickNext')
+      _.bindAll(this, 'render', 'didClickNext', 'roundDidEnd', 'roundDidStart')
       
       this.model.on('change:data', this.render)
       this.model.on('change:turn', this.render)
-      var self = this;
-      this.model.on('change:turn', function(){
-        console.log('change turn! ', self.model)
-      }, this)
+      this.model.on('round:start', this.roundDidStart)
+      this.model.on('round:end', this.roundDidEnd)
+      
       this.render()
     }
   , render: function(){
@@ -23,10 +22,8 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
       for(i = 0, len = this.model.slots; i < len; i ++){
         var view = new PieceView({model: this.model})
-        if(i < this.model.slot) view.deactivate('above')
-        if(i > this.model.slot) view.deactivate('below')
-        
-        console.log('has data?', !!this.model._data[i], this.model, i)
+        if(i < this.model.slot) view.disable('above')
+        if(i > this.model.slot) view.disable('below')
         
         if(this.model._data[i]) view.canvas.draw(this.model._data[i])
         
@@ -41,11 +38,22 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
     }
   , didClickNext: function(){
+      this.pieces[this.model.slot].canvas.disable()
       this.model.endTurn(this.serialize())
     }
 
   , serialize: function(){
       return {a:'b'}
+    }
+  , roundDidEnd: function(){
+      this.$('#game').addClass('finished')
+      this.$('a.button').hide()
+    }
+  , roundDidStart: function(){
+      this.$('#game').removeClass('finished')
+      this.pieces[this.model.slot].canvas.enable()
+      this.$('a.button').show()
+      this.render()
     }
   })
 })

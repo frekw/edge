@@ -37,7 +37,9 @@ h2 { font-size:24px; font-weight:bold; }
   
   .piece { display:inline-block; /*width:320px - 20px; height:480px - 20px;*/ position:relative; }
   
-  .conceal { position:absolute; left:0; right:0; background:white; }
+  .conceal { position:absolute; left:0; right:0; background:white;
+    @include transition(all 400ms ease-in);
+  }
   .conceal.above { top:0; bottom:10px; }
   .conceal.below { bottom:0; top:10px; }
 }
@@ -48,3 +50,14 @@ h2 { font-size:24px; font-weight:bold; }
 }
 
 .next-button { position:fixed; right:5px; bottom:5px; }
+
+#game {
+  @include transition(all 400ms ease-in-out);
+  @include scale(1.0);
+
+  &.finished {
+    @include scale(.333);
+  }
+}
+
+#game.finished .conceal { opacity:0; }

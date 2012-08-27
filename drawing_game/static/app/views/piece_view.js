@@ -9,11 +9,12 @@ define(['backbone', 'underscore', 'app/views/canvas_view'], function(bb, _, Canv
       this.canvas = new CanvasView({model: this.model})
       this.$el.append(this.canvas.el)
     }
-  , deactivate: function(direction){
+  , disable: function(direction){
       this.$el.append('<div class="conceal ' + direction + '" />')
+      this.canvas.disable()
     }
-  , activate: function(){
-    
+  , enable: function(){
+      this.canvas.enable()
     }
   })
 })
