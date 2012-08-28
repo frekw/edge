@@ -16,18 +16,20 @@ define(['events', 'jquery'], function(events, $) {
     , keys    = {};
 
   $(document).keydown(function(ev) {
-    if (ev.keyCode in directions) {
-      keys[ev.keyCode] = true;
+    if (ev.which in directions) {
+      keys[ev.which] = true;
       var key = _.keys(keys).sort().join('_');
       if (key in directions && moving !== directions[key]) {
         emitter.emit('move', directions[key]);
         moving = directions[key];
       }
       ev.preventDefault();
+    } else if (ev.which === 27) {
+      emitter.emit('cancel');
     }
   }).keyup(function(ev) {
-    if (ev.keyCode in directions) {
-      delete keys[ev.keyCode];
+    if (ev.which in directions) {
+      delete keys[ev.which];
       var key = _.keys(keys).sort().join('_');
       if (key in directions) {
         emitter.emit('move', directions[key]);
@@ -37,6 +39,10 @@ define(['events', 'jquery'], function(events, $) {
         moving = false;
       }
       ev.preventDefault();
+    }
+  }).keypress(function(ev) {
+    if (ev.which === 122) {
+      emitter.emit('zoom');
     }
   });
 

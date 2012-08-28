@@ -3,7 +3,6 @@ define(['underscore', './vector', './gameobject'], function(_, Vector, GameObjec
   /**
    * Player has the following attributes (in addition to GameObject's)
    *  - name
-   *  - score
    *  - movement
    */
   var Player = function(id, attributes) {
@@ -38,13 +37,16 @@ define(['underscore', './vector', './gameobject'], function(_, Vector, GameObjec
     // Set direction of burst (change existing burts)
     movement.acceleration.x = v.x;
     movement.acceleration.y = v.y;
+
+    // Emit
+    this.emit('move', direction);
   };
 
   Player.prototype.stop = function() {
     var movement = this.get('movement');
     movement.acceleration.x = 0;
     movement.acceleration.y = 0;
-    this.emit('stopped', this);
+    this.emit('stop');
   };
 
   Player.prototype.randomizePosition = function(game) {

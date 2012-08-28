@@ -19,4 +19,6 @@ config.baseUrl = path.join(__dirname, '..');
 requirejs.config(config);
 
 // Export loader
-module.exports = requirejs;
+module.exports = {
+  require : requirejs
+};

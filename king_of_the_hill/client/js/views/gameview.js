@@ -5,7 +5,7 @@ define(['backbone', 'underscore'], function(Backbone, _) {
     initialize: function(options) {
       _.bindAll(this, '_gameStateUpdated', '_scoreUpdated',
         '_playerAdded', '_playerRemoved', '_objectsCollided',
-        '_objectStateUpdated', '_objectSizeUpdated', '_objectPositionUpdated');
+        '_objectStateUpdated', '_objectPositionUpdated', '_objectRadiusUpdated');
 
       this.game = options.game;
 
@@ -15,12 +15,16 @@ define(['backbone', 'underscore'], function(Backbone, _) {
       this.game.on('add player',       this._playerAdded);
       this.game.on('remove player',    this._playerRemoved);
       this.game.on('objects collided', this._objectsCollided);
+
+      // Properties
+      this.zoom = false;
     },
 
     render: function() {
       // Make our element fill the parent
       var parent = this.$el.parent()[0];
       this.$el.width(parent.scrollWidth).height(parent.scrollHeight);
+      return this;
     },
 
     show: function() {
@@ -29,6 +33,10 @@ define(['backbone', 'underscore'], function(Backbone, _) {
 
     hide: function() {
       this.$el.hide();
+    },
+
+    toggleZoom: function() {
+      this.zoom = !this.zoom;
     },
 
     setPlayerId: function(id) {
@@ -68,8 +76,8 @@ define(['backbone', 'underscore'], function(Backbone, _) {
 
       // Listen for player updates
       player.on('state updated', this._objectStateUpdated);
-      player.on('resize', this._objectSizeUpdated);
-      player.on('move', this._objectPositionUpdated);
+      player.on('change position', this._objectPositionUpdated);
+      player.on('change radius', this._objectRadiusUpdated);
       // 'change radius', 'change velocity', 'change weight'
     },
 
@@ -78,8 +86,8 @@ define(['backbone', 'underscore'], function(Backbone, _) {
 
       // Remove listeners
       player.removeListener('state updated', this._objectStateUpdated);
-      player.removeListener('resize', this._objectSizeUpdated);
-      player.removeListener('move', this._objectPositionUpdated);
+      player.removeListener('change position', this._objectPositionUpdated);
+      player.removeListener('change radius', this._objectRadiusUpdated);
     },
 
     _objectsCollided: function(obj1, obj2) {
@@ -88,10 +96,10 @@ define(['backbone', 'underscore'], function(Backbone, _) {
     _objectStateUpdated: function(obj) {
     },
 
-    _objectSizeUpdated: function(obj, size) {
+    _objectPositionUpdated: function(obj, pos) {
     },
 
-    _objectPositionUpdated: function(obj, pos) {
+    _objectRadiusUpdated: function(obj, radius) {
     }
 
   });

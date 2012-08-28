@@ -1,16 +1,18 @@
 define([
   'jquery'
 , 'socket.io'
+, 'underscore'
 , './lib/game'
 , './utils/tickloop'
 , './views/raphael-gameview'
 , './views/alerts-view'
 , './views/signup-view'
 , './views/controls-view'
+, './views/scoreboard-view'
 , './input/keys'
 , './input/motion'
 , './input/touch'
-], function($, io, Game, Tickloop, GameView, Alerts, Signup, Controls, keys, motion, touch) {
+], function($, io, _, Game, Tickloop, GameView, Alerts, Signup, Controls, ScoreBoard, keys, motion, touch) {
 
   // http://advanced.aviary.com/launch/toucan
   var gameViewOptions = {
@@ -21,7 +23,7 @@ define([
     }
   , background : {
       color : '#36185f' // 'r#36185f-#fff'
-    , circles : 10
+    , circles : 20
     , inner : { stroke: '#fff', 'stroke-width': 3 }
     , outer : { stroke: '#000', 'stroke-width': 3 }
     }
@@ -36,6 +38,10 @@ define([
       }
     , collision : '#00f'
     , updated   : '#f00'
+    , arrow     : {
+        stroke : '#000'
+      , scale  : 0.3
+      }
     }
   };
 
@@ -44,16 +50,15 @@ define([
       // Create game
       var game = new Game();
 
-      gameViewOptions.game = game;
-      gameViewOptions.el = $('#game');
-
       // Create views
-      var gameView = new GameView(gameViewOptions)
+      var gameView = new GameView(_.extend({ el: '#game', game: game }, gameViewOptions))
         , alerts   = new Alerts({ el: '#alerts' })
-        , signup   = new Signup({ el: '#signup'})
-        , leave    = new Controls.Leave();
+        , signup   = new Signup({ el: '#signup' })
+        , score    = new ScoreBoard({ el: '#score', game: game })
+        , controls = new Controls({ el: '#controls' });
 
-      gameView.render();
+      gameView.render().hide();
+      controls.render().hide();
 
       // Game loop
       var tickloop = new Tickloop(function() {
@@ -68,16 +73,17 @@ define([
       // Connection events
       //
 
+      socket.on('connect_failed', function() {
+        alerts.error('Failed to connect to server...');
+      });
+
       socket.on('connect', function() {
         alerts.info('Connected to server...');
         socket.emit('get game state');
         gameView.show();
         tickloop.start();
+        controls.connected();
         signup.show();
-      });
-
-      socket.on('connect_failed', function() {
-        alerts.error('Failed to connect to server...');
       });
 
       socket.on('disconnect', function() {
@@ -85,6 +91,7 @@ define([
         tickloop.stop();
         gameView.hide();
         game.resetGameState();
+        controls.hide();
       });
 
       socket.socket.on('error', function (reason) {
@@ -99,13 +106,28 @@ define([
         socket.emit('join game', name);
       });
 
+      signup.on('cancel', function(name) {
+        controls.connected();
+      });
+
+      controls.on('join', function() {
+        signup.show();
+      });
+
+      controls.on('leave', function() {
+        socket.emit('leave game');
+      });
+
       socket.on('game joined', function(id) {
         signup.hide();
+        controls.joined();
         gameView.setPlayerId(id);
+        score.setPlayerId(id);
       });
 
       socket.on('join failed', function(message, name) {
         signup.show();
+        controls.connected();
         if (message === 'name exists') {
           signup.error('Player with name "' + name + '" already exists.');
         } else {
@@ -113,12 +135,9 @@ define([
         }
       });
 
-      leave.on('leave', function() {
-        socket.emit('leave game');
-      });
-
       socket.on('game left', function() {
         gameView.setPlayerId(undefined);
+        controls.connected();
       });
 
       //
@@ -131,6 +150,14 @@ define([
 
       keys.on('stop', function() {
         socket.emit('stop');
+      });
+
+      keys.on('zoom', function() {
+        gameView.toggleZoom();
+      });
+
+      keys.on('cancel', function() {
+        socket.emit('leave game');
       });
 
       motion.on('move', function(direction) {
@@ -187,6 +214,7 @@ define([
       });
 
       socket.on('score updated', function(score) {
+        console.log('socket.on("score updated", %s)', JSON.stringify(score));
         game.setScore(score);
       });
 

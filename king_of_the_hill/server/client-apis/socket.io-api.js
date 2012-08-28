@@ -36,12 +36,9 @@ exports.listen = function(server, game, playerAttrs) {
 
   var scoreTimeout;
   game.on('score updated', function(score) {
-    // TODO: Only send score updates once every 5 seconds
     if (!scoreTimeout) {
-      scoreTimeout = setTimeout(function() {
-        io.sockets.emit('score updated', score);
-        scoreTimeout = null;
-      }, 5000);
+      io.sockets.emit('score updated', score);
+      scoreTimeout = setTimeout(function() { scoreTimeout = null; }, 5000);
     }
   });
 
@@ -56,7 +53,8 @@ exports.listen = function(server, game, playerAttrs) {
  */
 function handleConnection(game, io, socket, playerAttrs) {
   var player = null
-    , still, leave_game;
+    , move, stop, still
+    , socket_move, socket_stop, socket_leave_game;
 
   //
   // Messages applicable for all connected clients
@@ -85,6 +83,16 @@ function handleConnection(game, io, socket, playerAttrs) {
     // Listen for player events
     //
 
+    player.on('move', move = function(direction) {
+      // Broadcast player move
+      io.sockets.emit('move player', player.id, player.getState(), direction);
+    });
+
+    player.on('stop', stop = function() {
+      // Broadcast player stop
+      io.sockets.emit('stop player', player.id, player.getState());
+    });
+
     player.on('still', still = function() {
       // Broadcast player still
       io.sockets.emit('still player', player.id, player.getState());
@@ -98,34 +106,35 @@ function handleConnection(game, io, socket, playerAttrs) {
   // Messages applicable for joined players
   //
 
-  socket.on('move', function move(direction) {
+  socket.on('move', socket_move = function(direction) {
     if (player == null) return;
 
     // Start moving
     player.move(direction);
-
-    // Broadcast player move
-    io.sockets.emit('move player', player.id, player.getState(), direction);
   });
 
-  socket.on('stop', function stop(direction) {
+  socket.on('stop', socket_stop = function(direction) {
     if (player == null) return;
 
     // Stop player
     player.stop();
-
-    // Broadcast player stop
-    io.sockets.emit('stop player', player.id, player.getState());
   });
 
-  socket.on('leave game', leave_game = function() {
+  socket.on('leave game', socket_leave_game = function() {
     if (player == null) return;
 
     // Remove player from game
     game.removePlayer(player.id);
 
     // Remove listeners from player
+    player.removeListener('move', move);
+    player.removeListener('stop', stop);
     player.removeListener('still', still);
+    move = stop = still = null;
+
+    // Remove listeners from socket
+    socket.removeListener('move', socket_move);
+    socket.removeListener('stop', socket_stop);
 
     // Clear player
     player = null;
@@ -134,6 +143,6 @@ function handleConnection(game, io, socket, playerAttrs) {
     socket.emit('game left');
   });
 
-  socket.on('disconnect', leave_game);
+  socket.on('disconnect', socket_leave_game);
 
 }

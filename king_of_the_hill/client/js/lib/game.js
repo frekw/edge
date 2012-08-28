@@ -43,10 +43,8 @@ define(['events', 'underscore', './vector', './player'], function(events, _, Vec
   };
 
   Game.prototype.setScore = function(score) {
-    if (!_.isEqual(this.score, score)) {
-      this.score = score;
-      this.emit('score updated', this.score);
-    }
+    this.score = score;
+    this.emit('score updated', this.score);
   };
 
   //
@@ -197,7 +195,11 @@ define(['events', 'underscore', './vector', './player'], function(events, _, Vec
   Game.prototype.tick = function() {
     var self = this, time, i, j
       , updateFn = function(obj) { obj.update(time, self); }
-      , getXFn   = function(obj) { return obj.getPosition().x; };
+      , getXFn   = function(obj) { return obj.getPosition().x; }
+      , updateScore = function(result, player) {
+          result[player.id] = (self.score[player.id] || 0) + player.calculateScore(self);
+          return result;
+        };
 
 
     while (this.nextUpdate < (time = Date.now())) {
@@ -219,17 +221,13 @@ define(['events', 'underscore', './vector', './player'], function(events, _, Vec
 
       this.updates += 1;
       this.nextUpdate += this.time_step * 1000;
-    }
 
-    // Update score for each player
-    _.each(this.getPlayers(), function(player) {
-      var score = player.calculateScore(self);
-      if (!(player.id in self.score)) {
-        self.score[player.id] = 0;
+      if (this.updates % 10 === 0) {
+        // Calculate new score for each player
+        var score = _.reduce(this.getPlayers(), updateScore, {});
+        this.setScore(score);
       }
-      self.score[player.id] += score;
-    });
-    this.emit('score updated', this.score);
+    }
 
     // Update fps
     var elapsed = Date.now() - this.startTime;

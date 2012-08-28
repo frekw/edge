@@ -14,12 +14,17 @@ html
 
     #game
     #score
+    #controls
 
     footer
       template(id="alert"):
         include templates/alert
       template(id="signup"):
         include templates/signup
+      template(id="scoreboard"):
+        include templates/scoreboard
+      template(id="controls"):
+        include templates/controls
 
       script(src='js/jamjs/require.js')
       script

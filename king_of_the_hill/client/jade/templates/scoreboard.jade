@@ -1,0 +1,24 @@
+table.table
+  thead
+    tr
+      th #
+      th name
+      th score
+  tbody
+    if active
+      tr.active
+        td= active.pos
+        td= active.name
+        td= active.score.toFixed(0)
+      each player in players.slice(0, 3)
+        if !(active && active.id === player.id)
+          tr
+            td= player.pos
+            td= player.name
+            td= player.score.toFixed(0)
+    else
+      each player in players.slice(0, 10)
+        tr
+          td= player.pos
+          td= player.name
+          td= player.score.toFixed(0)

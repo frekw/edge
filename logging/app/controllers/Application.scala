@@ -15,22 +15,29 @@ object Application extends Controller {
     Ok("from your shell ab -k -c 100 -n 1000000 http://localhost:9000/load")
   }
 
-  def index = Action {
+  def index = Action { implicit request =>
     Ok(views.html.monitor(Runtime.getRuntime().totalMemory()/(1024*1024)))
   }
 
-  def monitoring = Action {
-   Ok.stream(
-     Streams.getRequestsPerSecond >-
-     Streams.getCPU >-
-     Streams.getHeap &>
-     Comet( callback = "parent.message"))
+  def monitoring = WebSocket.using[String] { request =>
+    // Ignore any input
+    val in = Iteratee.ignore[String]
+
+    // Create combined (interleaved) Enumerator from Streams
+    val out =
+      Streams.getRequestsPerSecond >-
+      Streams.getCPU >-
+      Streams.getHeap
+
+    // Return input / output for websocket
+    (in, out)
   }
 
   def gc = Action {
     Runtime.getRuntime().gc()
     Ok("Done")
   }
+
 }
 
 object Streams {

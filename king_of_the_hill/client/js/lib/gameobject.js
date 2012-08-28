@@ -66,7 +66,7 @@ define(['events', 'underscore', './vector'], function(events, _, Vector) {
     if (position.x !== position_.x || position.y !== position_.y) {
       position.x = position_.x;
       position.y = position_.y;
-      this.emit('move', this, position);
+      this.emit('change position', this, position);
     }
   };
 
@@ -78,7 +78,6 @@ define(['events', 'underscore', './vector'], function(events, _, Vector) {
     if (this.radius !== radius) {
       this.radius = radius;
       this.emit('change radius', this, radius);
-      this.emit('resize', this, this.getSize());
     }
   };
 

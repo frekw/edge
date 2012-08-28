@@ -58,7 +58,7 @@
         this.screenCurrent.innerHTML = val + this.unit;
     }
 
-    function init() {
+    app.init = function(socketUrl) {
 
         window.document.addEventListener('touchmove', function (evt) {
             evt.preventDefault();
@@ -107,21 +107,18 @@
 
         window.document.body.appendChild(button);
 
-        var iframe = create("iframe");
-        iframe.src = "/monitoring";
-        iframe.style.display = "none";
-
-        window.message = function (msg) {
-            var d = msg.split(":");
+        var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
+        var socket = new WS(socketUrl)
+        socket.onmessage = function (event) {
+            var d = event.data.split(":");
             app.lastCall = (new Date()).getTime();
             if (d.length == 2) {
                 app[d[1]].update(d[0]);
             }
-        }
+        };
 
         setTimeout(function () {
             app.lastCall = (new Date()).getTime();
-            window.document.body.appendChild(iframe);
         }, 100);
 
         setInterval(function () {
@@ -132,7 +129,5 @@
             }
         },300);
     }
-
-    window.document.addEventListener("DOMContentLoaded", init, false);
 
 })(window.App);

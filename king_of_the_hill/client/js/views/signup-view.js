@@ -3,8 +3,10 @@ define(['backbone', 'underscore', 'bootstrap'], function(Backbone, _) {
   return Backbone.View.extend({
 
     events: {
-      'submit' : '_signup'
-    , 'shown'  : '_shown'
+      'click .signup' : '_signup'
+    , 'click .cancel' : '_cancel'
+    , 'keydown input' : '_cancelOnEscape'
+    , 'shown'         : '_shown'
     },
 
     initialize: function(options) {
@@ -54,6 +56,16 @@ define(['backbone', 'underscore', 'bootstrap'], function(Backbone, _) {
       this.$('button').attr('disabled', true);
       console.log('trigger signup');
       this.trigger('signup', this.$('input[name="name"]').val());
+    },
+
+    _cancel: function(e) {
+      e.preventDefault();
+      this.hide();
+      this.trigger('cancel');
+    },
+
+    _cancelOnEscape: function(e) {
+      if (e.which === 27) this._cancel(e);
     },
 
     _shown: function() {

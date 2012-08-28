@@ -1,0 +1,14 @@
+@(totalMemory: Long)(implicit request: RequestHeader)
+
+@main("RPS") {
+    <script type="text/javascript">
+        window.App = { };
+        window.App.totalMemory = @totalMemory;
+    </script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/main.min.js")"></script>
+    <script>
+        window.document.addEventListener("DOMContentLoaded", function() {
+          window.App.init("@routes.Application.monitoring().webSocketURL()");
+        }, false);
+    </script>
+}

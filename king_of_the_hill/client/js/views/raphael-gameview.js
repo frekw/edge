@@ -15,6 +15,13 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
 
       // Setup camera
       this.camera = this.raphael.camera(this.game, this.options.camera);
+
+      return this;
+    },
+
+    toggleZoom: function() {
+      GameView.prototype.toggleZoom.apply(this, arguments);
+      this.camera.setZoom(this.zoom);
     },
 
     socketPlayerMove: function(player) {
@@ -83,6 +90,12 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       // Invoke GameView._playerRemoved
       GameView.prototype._playerRemoved.apply(this, arguments);
 
+      // Check if active player leaves
+      if (player.id === this.playerId) {
+        player.view.setActive(false);
+        this.camera.setActivePlayer(null);
+      }
+
       // Remove player view
       player.view.remove();
     },
@@ -96,16 +109,16 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       }
     },
 
-    _objectSizeUpdated: function(obj, size) {
-      obj.view.resize(obj.getRadius());
-    },
-
     _objectPositionUpdated: function(obj, pos) {
       // Move player
       obj.view.move(pos);
 
       // Notify camera of move
       this.camera.playerMove(obj);
+    },
+
+    _objectRadiusUpdated: function(obj, radius) {
+      obj.view.resize(radius);
     }
 
   });
@@ -119,17 +132,19 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       , type    = options.type
       , width   = options.width
       , height  = options.height
-      , player  = null;
+      , player  = null
+      , zoom    = false;
 
     var update = function() {
-      if (type === 'player' && player) {
+      if (type === 'player' && player && zoom) {
         // Center around player
         var pos = player.getPosition();
-        raphael.setViewBox(pos.x - width / 2, pos.y - height / 2, width, height, false);
+        raphael.setViewBox(pos.x - width / 2, pos.y - height / 2, width, height, true);
       } else {
-        // Show full board
-        var gameRadius = game.getBoard().radius;
-        raphael.setViewBox(-gameRadius, -gameRadius, gameRadius * 2, gameRadius * 2, false);
+        // Show full board or center of board if zoomed
+        var gameRadius   = game.getBoard().radius
+          , cameraRadius = zoom ? gameRadius / 5 : gameRadius;
+        raphael.setViewBox(-cameraRadius, -cameraRadius, cameraRadius * 2, cameraRadius * 2, true);
       }
     };
 
@@ -138,10 +153,16 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
     return {
       setActivePlayer: function(player_) {
         player = player_;
+        // Zoom if player exists
+        zoom = !!player;
+        update();
+      },
+      setZoom: function(zoom_) {
+        zoom = zoom_;
         update();
       },
       playerMove: function(player_) {
-        if (type === 'player' && player && player.id === player_.id) {
+        if (type === 'player' && player && player.id === player_.id && zoom) {
           update();
         }
       },
@@ -188,9 +209,16 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       , active = false
       , attr   = _.extend({}, options.attrs, { 'stroke-width': 1 })
       , circle = this.circle(0, 0, radius).attr(attr)
-      , name   = this.text(0, 0, player.getName()).attr({ 'font-size': 6 });
+      , name   = this.text(0, 0, player.getName()).attr({ 'font-size': 6 })
+      , arrow  = false;
 
     set.push(circle, name);
+
+    if (options.arrow) {
+      attr = _.extend({}, options.arrow, { 'stroke-width': 1 });
+      arrow = this.path('M0,0L0,-1').attr(attr);
+      set.push(arrow);
+    }
 
     var stroke = circle.attr('stroke');
 
@@ -210,7 +238,13 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
     };
 
     set.move = function(pos) {
-      set.transform('t' + pos.x + ',' + pos.y);
+      set.transform('T' + pos.x + ',' + pos.y);
+      if (arrow) {
+        var movement = player.get('movement')
+          , acc      = movement.acceleration
+          , scale    = options.arrow.scale || 1;
+        arrow.attr('path', 'M0,0L' + (acc.x * scale).toFixed(0) + ',' + (acc.y * scale).toFixed(0));
+      }
     };
 
     set.resize = function(radius) {
