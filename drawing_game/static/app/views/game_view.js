@@ -5,7 +5,6 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
     }
     
   , initialize: function(opts){
-      console.log('GameView#init')
       _.bindAll(this, 'render', 'didClickNext', 'roundDidEnd', 'roundDidStart', 'killEvents')
       
       this.model.on('change:data', this.render)
@@ -50,7 +49,6 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
   , didClickNext: function(){
       this.pieces[this.model.slot].canvas.disable()
       this.model.endTurn(this.serialize())
-      console.log('btn', this.$('a.next-button'))
       this.$('a.next-button').hide()
     }
 
