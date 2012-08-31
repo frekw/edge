@@ -30,9 +30,8 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model
       this.player = player;
     })
     
-    if(util.hasTouch){
+    if(util.hasTouch)
         $('html').addClass('has-touch')
-      
   }
   
   return Main;
