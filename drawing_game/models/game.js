@@ -94,7 +94,8 @@ Game.prototype.didReceiveData = function(data){
 
 Game.prototype.nextTurn = function(){
   if(++this._turn > Game.MAX_COUNT - 1){
-    this.broadcast('game:end', Game.TIME_BETWEEN_ROUNDS)
+//    this.broadcast('game:end', Game.TIME_BETWEEN_ROUNDS)
+    this.broadcast('game:end', this.serialize())
     setTimeout(this.reset.bind(this), Game.TIME_BETWEEN_ROUNDS)
   } else {
     this.broadcast('game:turn:next', this.serialize())
