@@ -27,7 +27,7 @@ app.get('/', function(req, res, next){
   res.render('index')
 })
 
-server.listen(3000)
+server.listen(parseInt(process.argv[2], 10) || 3000)
 
 var players = []
   , rooms   = []
