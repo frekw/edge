@@ -1,0 +1,11 @@
+{ "name"    : "index"
+, "version" : "1.0.0"
+, "author"  : "Calle Wester"
+, "dependencies" :
+  { "express"    : "2.5.11"
+  , "socket.io"  : "0.9.x"
+  , "jade"       : "0.27.x"
+  , "stylus"     : "0.29.x"
+  , "bouncy"     : "1.3.1"
+  }
+}
