@@ -30,23 +30,9 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model
       this.player = player;
     })
     
-    var killEvents = function(e){ e.preventDefault(); }
     if(util.hasTouch){
         $('html').addClass('has-touch')
-        $('body').on('touchstart', killEvent)
-    }
-        
-    
-    var isScrollingDisabled = true
-    $('body').on('click', '.disable-touch-button', function(){
-      if(isScrollingDisabled) {
-        $('body').off('touchstart', killEvent)
-      } else {
-        $('body').on('touchstart', killEvent)
-      }
       
-      isScrollingDisabled = !!isScrollingDisabled
-    })
   }
   
   return Main;

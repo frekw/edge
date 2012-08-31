@@ -6,7 +6,7 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
     
   , initialize: function(opts){
       console.log('GameView#init')
-      _.bindAll(this, 'render', 'didClickNext', 'roundDidEnd', 'roundDidStart')
+      _.bindAll(this, 'render', 'didClickNext', 'roundDidEnd', 'roundDidStart', 'killEvents')
       
       this.model.on('change:data', this.render)
       this.model.on('change:turn', this.render)
@@ -35,10 +35,12 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
       this.$('#game').css('margin-top', - 480 * this.model.slot + 20)
       
-      if(this.model.turn === this.model.slot)
+      if(this.model.turn === this.model.slot) {
         this.$el.append('<a href="#" class="button next-button">Next</a>')
-        
-      this.$el.append('<a href="#" class="button disable-touch-button">Toggle scrolling</a>')
+        $('body').on('touchmove', this.killEvents)
+      } else {
+        $('body').off('touchmove', this.killEvents)
+      }
 
 
       var playerView = new PlayerView({model: this.model})
@@ -65,5 +67,8 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       this.$('a.next-button').show()
       this.render()
     }
+  , killEvents: function(e){
+      e.preventDefault()
+  }
   })
 })
