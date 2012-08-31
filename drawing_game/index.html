@@ -12,6 +12,9 @@
     require(['jquery', 'app/main', 'app/util'], function($, Main, util){
       if(util.hasTouch)
         $('html').addClass('has-touch')
+        $('body').on('touchstart', function(e){
+          e.preventDefault()
+        })
         
       console.log('Main', Main)
       new Main({ el: '#canvas' });
