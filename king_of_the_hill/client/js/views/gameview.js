@@ -72,8 +72,6 @@ define(['backbone', 'underscore'], function(Backbone, _) {
     },
 
     _playerAdded: function(player) {
-      console.log('GameView._playerAdded(%o)', player);
-
       // Listen for player updates
       player.on('state updated', this._objectStateUpdated);
       player.on('change position', this._objectPositionUpdated);
@@ -82,8 +80,6 @@ define(['backbone', 'underscore'], function(Backbone, _) {
     },
 
     _playerRemoved: function(player) {
-      console.log('GameView._playerRemoved(%o)', player);
-
       // Remove listeners
       player.removeListener('state updated', this._objectStateUpdated);
       player.removeListener('change position', this._objectPositionUpdated);

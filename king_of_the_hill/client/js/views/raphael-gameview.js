@@ -24,18 +24,20 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       this.camera.setZoom(this.zoom);
     },
 
+    gameTicked: function() {
+      GameView.prototype.gameTicked.apply(this, arguments);
+      this._updateUI();
+    },
+
     socketPlayerMove: function(player) {
-      console.log('RaphaelGameView.socketPlayerMove()');
       this._socketPlayerUpdated(player);
     },
 
     socketPlayerStop: function(player) {
-      console.log('RaphaelGameView.socketPlayerStop()');
       this._socketPlayerUpdated(player);
     },
 
     socketPlayerStill: function(player) {
-      console.log('RaphaelGameView.socketPlayerStill()');
       this._socketPlayerUpdated(player);
     },
 
@@ -48,7 +50,6 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
     },
 
     _setPlayer: function(player) {
-      console.log('RaphaelGameView._setPlayer()');
       player.view.setActive(true);
       this.camera.setActivePlayer(player);
     },
@@ -65,11 +66,10 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       this.background.resize(board.center, board.radius);
 
       // Update camera
-      this.camera.update();
+      this.camera.forceUpdate();
     },
 
     _playerAdded: function(player) {
-      console.log('RaphaelGameView._playerAdded()');
       // Invoke GameView._playerAdded
       GameView.prototype._playerAdded.apply(this, arguments);
 
@@ -119,6 +119,14 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
 
     _objectRadiusUpdated: function(obj, radius) {
       obj.view.resize(radius);
+    },
+
+    _updateUI: function() {
+      this.camera.update();
+      var players = this.game.getPlayers();
+      _.each(players, function(player) {
+        player.view.update();
+      });
     }
 
   });
@@ -135,38 +143,43 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       , player  = null
       , zoom    = false;
 
-    var update = function() {
-      if (type === 'player' && player && zoom) {
-        // Center around player
-        var pos = player.getPosition();
-        raphael.setViewBox(pos.x - width / 2, pos.y - height / 2, width, height, true);
-      } else {
-        // Show full board or center of board if zoomed
-        var gameRadius   = game.getBoard().radius
-          , cameraRadius = zoom ? gameRadius / 5 : gameRadius;
-        raphael.setViewBox(-cameraRadius, -cameraRadius, cameraRadius * 2, cameraRadius * 2, true);
-      }
-    };
-
-    update();
+    var setViewBox = true;
 
     return {
       setActivePlayer: function(player_) {
         player = player_;
         // Zoom if player exists
         zoom = !!player;
-        update();
+        setViewBox = true;
       },
       setZoom: function(zoom_) {
         zoom = zoom_;
-        update();
+        setViewBox = true;
       },
       playerMove: function(player_) {
         if (type === 'player' && player && player.id === player_.id && zoom) {
-          update();
+          setViewBox = true;
         }
       },
-      update: update
+      forceUpdate: function() {
+        setViewBox = true;
+      },
+      update: function() {
+        if (!setViewBox) return;
+
+        if (type === 'player' && player && zoom) {
+          // Center around player
+          var pos = player.getPosition();
+          raphael.setViewBox(pos.x - width / 2, pos.y - height / 2, width, height, true);
+        } else {
+          // Show full board or center of board if zoomed
+          var gameRadius   = game.getBoard().radius
+            , cameraRadius = zoom ? gameRadius / 5 : gameRadius;
+          raphael.setViewBox(-cameraRadius, -cameraRadius, cameraRadius * 2, cameraRadius * 2, true);
+        }
+
+        setViewBox = false;
+      }
     };
 
   };
@@ -237,7 +250,13 @@ define(['raphael', 'underscore', './gameview'], function(Raphael, _, GameView) {
       }, 100);
     };
 
-    set.move = function(pos) {
+    var pos = null;
+    set.move = function(pos_) {
+      pos = pos_;
+    };
+
+    set.update = function() {
+      if (!pos) return;
       set.transform('T' + pos.x + ',' + pos.y);
       if (arrow) {
         var movement = player.get('movement')
