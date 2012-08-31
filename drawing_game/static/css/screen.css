@@ -5137,7 +5137,7 @@ input[type=text]:focus {
 /**
  * This needs @media queries to accomodate for different screen sizes.
  */
-/* line 8, ../../sass/ui/dialog.scss */
+/* line 7, ../../sass/ui/dialog.scss */
 .dialog {
   position: absolute;
   top: 25%;
@@ -5154,26 +5154,26 @@ input[type=text]:focus {
   -o-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 14, ../../sass/ui/dialog.scss */
+/* line 13, ../../sass/ui/dialog.scss */
 .dialog form {
   position: relative;
   height: 125px;
   margin-top: 20px;
 }
-/* line 15, ../../sass/ui/dialog.scss */
+/* line 14, ../../sass/ui/dialog.scss */
 .dialog input {
   position: absolute;
   left: 10px;
   right: 10px;
 }
-/* line 16, ../../sass/ui/dialog.scss */
+/* line 15, ../../sass/ui/dialog.scss */
 .dialog .title {
   background: whitesmoke;
   padding: 15px 10px;
   border-bottom: 1px solid #d9d9d9;
   margin: 0;
 }
-/* line 19, ../../sass/ui/dialog.scss */
+/* line 18, ../../sass/ui/dialog.scss */
 .dialog .actions {
   position: absolute;
   bottom: 0;
@@ -5184,6 +5184,15 @@ input[type=text]:focus {
   text-align: right;
 }
 
+@media (max-width: 480px) {
+  /* line 25, ../../sass/ui/dialog.scss */
+  .dialog {
+    left: 5px;
+    right: 5px;
+    top: 5px;
+    bottom: auto;
+  }
+}
 /* line 3, ../../sass/ui/tooltip.scss */
 .tooltip {
   position: fixed;
@@ -5344,4 +5353,17 @@ h2 {
 /* line 64, ../../sass/screen.scss */
 #game.finished .conceal {
   opacity: 0;
+}
+
+/* line 66, ../../sass/screen.scss */
+.disable-touch-button {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  display: none;
+}
+
+/* line 67, ../../sass/screen.scss */
+.has-touch .disable-touch-button {
+  display: block;
 }

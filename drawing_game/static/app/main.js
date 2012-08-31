@@ -12,7 +12,6 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model
     })
     
     socket.on('game:join', function(data){
-      console.log('Room: ', data)
       mediator.trigger('game:join', data)
       
       
@@ -29,11 +28,25 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model
     
     mediator.on('player:create', function(player){
       this.player = player;
-      console.log('start the game in main')
     })
     
-    if(util.hasTouch)
+    var killEvents = function(e){ e.preventDefault(); }
+    if(util.hasTouch){
         $('html').addClass('has-touch')
+        $('body').on('touchstart', killEvent)
+    }
+        
+    
+    var isScrollingDisabled = true
+    $('body').on('click', '.disable-touch-button', function(){
+      if(isScrollingDisabled) {
+        $('body').off('touchstart', killEvent)
+      } else {
+        $('body').on('touchstart', killEvent)
+      }
+      
+      isScrollingDisabled = !!isScrollingDisabled
+    })
   }
   
   return Main;
@@ -49,16 +62,13 @@ define(['socket.io/socket.io', 'app/models/player_model', 'app/models/game_model
   })
   
   socket.on('ready', function(){
-    console.log('socket.io is ready')
   })
   
   socket.on('data', function(data){
     
-    console.log('ids', sid, data.id)
     
     if(data.id == sid) return
     
-    console.log('draw data...')
     
     var canvas = $('#canvas')[0]
       , img = new Image()

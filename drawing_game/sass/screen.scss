@@ -62,3 +62,6 @@ h2 { font-size:24px; font-weight:bold; }
 }
 
 #game.finished .conceal { opacity:0; }
+
+.disable-touch-button { position:fixed; bottom:5px; left:5px; display:none; }
+.has-touch .disable-touch-button { display:block; }

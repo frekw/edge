@@ -1,7 +1,6 @@
 @import "compass";
 @import "colors";
 
-
 /**
  * This needs @media queries to accomodate for different screen sizes.
  */
@@ -20,4 +19,8 @@
     position:absolute; bottom:0; right:0; left:0; padding:10px; border-top:1px solid $border;
     text-align:right;
   }
+}
+
+@media (max-width: 480px) {
+  .dialog { left:5px; right:5px; top:5px; bottom:auto; }
 }

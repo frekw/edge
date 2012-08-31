@@ -28,6 +28,7 @@ Game.TIME_BETWEEN_ROUNDS = 5 * 1000; // milliseconds
 Game._games = []
 
 Game.findGame = function(){
+  console.log('games', Game._games)
   var available = Game._games.filter(function(game){
     return game.isFull()
   })

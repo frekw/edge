@@ -1,7 +1,7 @@
 define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view'], function(bb, _, PieceView, PlayerView){
   return bb.View.extend({
     events: {
-      'click a.button': 'didClickNext'
+      'click a.next-button': 'didClickNext'
     }
     
   , initialize: function(opts){
@@ -37,6 +37,9 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
       if(this.model.turn === this.model.slot)
         this.$el.append('<a href="#" class="button next-button">Next</a>')
+        
+      this.$el.append('<a href="#" class="button disable-touch-button">Toggle scrolling</a>')
+
 
       var playerView = new PlayerView({model: this.model})
       playerView.$el.appendTo(this.$el)
