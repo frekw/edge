@@ -114,13 +114,9 @@ define(['underscore', './vector', './gameobject'], function(_, Vector, GameObjec
       return;
     }
 
-    // console.log('Player("%s")._bounceOfWall(%d + %d >= %d)', this.getName(), dist, radius, board.radius);
-
     // Find intersection point with game boundry
     // TODO: Use velocity to back-track time of collision and calculate correct position
-    // console.log('Player._bounceOfWall() p1 = ', p1, (board.radius - radius) / dist);
     var p2 = p1.scalarMulti((board.radius - radius) / dist);
-    // console.log('Player._bounceOfWall() p2 = ', p2);
 
     // Update position
     position.x = p2.x;
@@ -135,16 +131,11 @@ define(['underscore', './vector', './gameobject'], function(_, Vector, GameObjec
     // Calculate normal vector for game boundry
     var N = p2.unit();
 
-    // console.log('Player._bounceOfWall() N = ', N);
-
     // Project velocity onto N
     var vn = v1.scalarProj(N);
 
-    // console.log('Player._bounceOfWall() vn = ', vn);
-
     // New velocity is v' = v - 2 * projN(v)
     var v2 = v1.sub(vn.scalarMulti(2));
-    // console.log('Player._bounceOfWall() v2 = ', v2);
     velocity.x = v2.x;
     velocity.y = v2.y;
   };

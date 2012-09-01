@@ -61,7 +61,6 @@ define(['events', 'underscore', './vector'], function(events, _, Vector) {
   };
 
   GameObject.prototype.setPosition = function(position_) {
-    // console.log('GameObject(%d).setPosition(%s)', this.id, JSON.stringify(position_));
     var position = this.getPosition();
     if (position.x !== position_.x || position.y !== position_.y) {
       position.x = position_.x;
@@ -90,7 +89,6 @@ define(['events', 'underscore', './vector'], function(events, _, Vector) {
   };
 
   GameObject.prototype.setVelocity = function(velocity_) {
-    // console.log('GameObject(%d).setVelocity(%s)', this.id, velocity_);
     var velocity = this.getVelocity();
     if (velocity.x !== velocity_.x || velocity.y !== velocity_.y) {
       velocity.x = velocity_.x;

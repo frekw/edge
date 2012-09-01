@@ -61,7 +61,7 @@ app.get('/', function(req, res) {
  */
 
 var gameAttrs = {
-  radius    : 1000
+  radius    : 200
 , gravity   : 10
 , time_step : 1/30
 };
@@ -85,10 +85,6 @@ clientjs.require(['js/lib/game'], function(Game) {
     game.tick();
     ticks++;
   }, gameAttrs.time_step * 1000);
-
-  // setInterval(function() {
-  //   console.log('tps = %s', (ticks / (Date.now() - start) * 1000).toFixed(2));
-  // }, 1000);
 
   // Startup SocketIO interface
   socketIO.listen(app, game, playerAttrs);

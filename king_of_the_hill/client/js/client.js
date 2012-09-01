@@ -23,7 +23,7 @@ define([
     }
   , background : {
       color : '#36185f' // 'r#36185f-#fff'
-    , circles : 20
+    , circles : 8
     , inner : { stroke: '#fff', 'stroke-width': 3 }
     , outer : { stroke: '#000', 'stroke-width': 3 }
     }
@@ -34,10 +34,10 @@ define([
       }
     , active : {
         fill   : 'r(0.4, 0.4)#cc9933-#ffee00'
-      , stroke : '#000'
+      , stroke : '#fff'
       }
-    , collision : '#00f'
-    , updated   : '#f00'
+    , collision : '#9933cc'
+    , updated   : '#cc9933'
     , arrow     : {
         stroke : '#000'
       , scale  : 0.3
@@ -50,6 +50,14 @@ define([
       // Create game
       var game = new Game();
 
+      // Simplify graphics for touch devices
+      if (touch.hasTouch) {
+        gameViewOptions.players.attrs.fill = '#d9d9d9';
+        gameViewOptions.players.active.fill = '#ffcc22';
+        delete gameViewOptions.players.collision;
+        delete gameViewOptions.players.updated;
+      }
+
       // Create views
       var gameView = new GameView(_.extend({ el: '#game', game: game }, gameViewOptions))
         , alerts   = new Alerts({ el: '#alerts' })
@@ -59,6 +67,12 @@ define([
 
       gameView.render().hide();
       controls.render().hide();
+
+      // Remove score and controls if touch device for performance reasons
+      if (touch.hasTouch) {
+        score.remove();
+        controls.remove();
+      }
 
       // Game loop
       var tickloop = new Tickloop(function() {
@@ -214,7 +228,6 @@ define([
       });
 
       socket.on('score updated', function(score) {
-        console.log('socket.on("score updated", %s)', JSON.stringify(score));
         game.setScore(score);
       });
 

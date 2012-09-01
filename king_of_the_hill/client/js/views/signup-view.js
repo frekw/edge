@@ -54,7 +54,6 @@ define(['backbone', 'underscore', 'bootstrap'], function(Backbone, _) {
       }
 
       this.$('button').attr('disabled', true);
-      console.log('trigger signup');
       this.trigger('signup', this.$('input[name="name"]').val());
     },
 
