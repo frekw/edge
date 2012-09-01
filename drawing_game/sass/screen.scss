@@ -43,6 +43,8 @@ h2 { font-size:24px; font-weight:bold; }
   }
   .conceal.above { top:0; bottom:10px; }
   .conceal.below { bottom:0; top:10px; }
+  
+  canvas { display:block; }
 }
 
 #overlay {

@@ -5310,8 +5310,12 @@ h2 {
   bottom: 0;
   top: 10px;
 }
+/* line 47, ../../sass/screen.scss */
+.pieces canvas {
+  display: block;
+}
 
-/* line 48, ../../sass/screen.scss */
+/* line 50, ../../sass/screen.scss */
 #overlay {
   background: rgba(255, 255, 255, 0.9);
   position: fixed;
@@ -5321,14 +5325,14 @@ h2 {
   bottom: 0;
 }
 
-/* line 53, ../../sass/screen.scss */
+/* line 55, ../../sass/screen.scss */
 .next-button {
   position: fixed;
   right: 5px;
   bottom: 5px;
 }
 
-/* line 55, ../../sass/screen.scss */
+/* line 57, ../../sass/screen.scss */
 #game {
   -webkit-transition: all 400ms ease-in-out;
   -moz-transition: all 400ms ease-in-out;
@@ -5341,7 +5345,7 @@ h2 {
   -o-transform: scale(1, 1);
   transform: scale(1, 1);
 }
-/* line 59, ../../sass/screen.scss */
+/* line 61, ../../sass/screen.scss */
 #game.finished {
   -webkit-transform: scale(0.333, 0.333);
   -moz-transform: scale(0.333, 0.333);
@@ -5350,12 +5354,12 @@ h2 {
   transform: scale(0.333, 0.333);
 }
 
-/* line 64, ../../sass/screen.scss */
+/* line 66, ../../sass/screen.scss */
 #game.finished .conceal {
   opacity: 0;
 }
 
-/* line 66, ../../sass/screen.scss */
+/* line 68, ../../sass/screen.scss */
 .disable-touch-button {
   position: fixed;
   bottom: 5px;
@@ -5363,7 +5367,7 @@ h2 {
   display: none;
 }
 
-/* line 67, ../../sass/screen.scss */
+/* line 69, ../../sass/screen.scss */
 .has-touch .disable-touch-button {
   display: block;
 }

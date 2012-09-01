@@ -32,7 +32,7 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       
       if(this.model.turn !== this.model.slot) this.$('a.button').remove()
       
-      this.$('#game').css('margin-top', - 480 * this.model.slot + 20)
+      this.$('#game').css('margin-top', - 340 * this.model.slot + 20)
       
       if(this.model.turn === this.model.slot) {
         this.$el.append('<a href="#" class="button next-button">Next</a>')
@@ -56,7 +56,7 @@ define(['backbone', 'underscore', 'app/views/piece_view', 'app/views/player_view
       return {a:'b'}
     }
   , roundDidEnd: function(){
-      this.$('#game').css('margin-top', - (480 * this.model.players.length * 0.25))
+      this.$('#game').css('margin-top', - (340 * this.model.players.length * 0.25))
       this.$('#game').addClass('finished')
     }
   , roundDidStart: function(){

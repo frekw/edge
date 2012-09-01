@@ -24,7 +24,7 @@ var Game = function(){
 }
 
 Game.MAX_COUNT = 2
-Game.TIME_BETWEEN_ROUNDS = 5 * 1000; // milliseconds
+Game.TIME_BETWEEN_ROUNDS = 12 * 1000; // milliseconds
 Game._games = []
 
 Game.findGame = function(){
